@@ -1,43 +1,35 @@
-# Dependências do Node.js
-/node_modules/
-/npm-debug.log*
-/yarn-error.log
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# Pasta de build do React Native
-/android/
-/ios/
+# dependencies
+node_modules/
 
-# Arquivos do Expo
+# Expo
 .expo/
-.expo-shared/
-
-# Diretório de cache do Metro Bundler
-# https://facebook.github.io/metro/docs/en/configuration
-.cache/
 dist/
+web-build/
 
-# Arquivos de logs
-*.log
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
 
-# Configurações do VSCode
-.vscode/
+# Metro
+.metro-health-check*
 
-# Builds e artefatos temporários
-/build/
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
 .DS_Store
+*.pem
 
-# Informações de depuração
-*.stackdump
+# local env files
+.env*.local
 
-# Test coverage
-/coverage/
-
-# Arquivos de ambiente local
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Pods gerados pelo CocoaPods para iOS
-Pods/
+# typescript
+*.tsbuildinfo
