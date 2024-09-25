@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
+import { login } from '../services/AuthService';
 
 const colors = {
   primary: '#FF69B4',
@@ -9,11 +10,21 @@ const colors = {
 };
 
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = () => {
-    navigation.replace('Home');
+  const handleLogin = async () => {
+    try {
+      const result = await login(email, password);
+      if (!result.success) {
+        Alert.alert('Erro', result.message); 
+      } else {
+        navigation.replace('Home');
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
   };
 
   return (
@@ -21,9 +32,9 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.loginBox}>
         <TextInput
           style={styles.input}
-          placeholder="Usuário"
-          value={username}
-          onChangeText={setUsername}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
         />
         <TextInput
           style={styles.input}
@@ -32,7 +43,9 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={setPassword}
           secureTextEntry
         />
+        {errorMessage.length > 0 && <Text style={styles.error}>{errorMessage}</Text>}
         <Button title="Login" onPress={handleLogin} color={colors.primary} />
+        <Button title="Criar Conta" onPress={() => navigation.navigate('SignUp')} color={colors.secondary} />
       </View>
     </View>
   );
@@ -62,6 +75,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 10,
+  },
+  error: {
+    color: 'red',
+    marginBottom: 12,
   },
 });
 

@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+%ProgramData%/
 
 # Expo
 .expo/
@@ -33,3 +34,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# development appsettings
+appsettings-dev.js
