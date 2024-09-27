@@ -6,6 +6,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ProcedureScreen from '../screens/ProceduresScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -24,19 +25,26 @@ const CustomDrawerContent = (props) => {
       <View style={styles.divider} />
 
       <DrawerItem
-        label="Calendar"
-        onPress={() => props.navigation.navigate('Calendar')}
+        label="Agenda"
+        onPress={() => props.navigation.navigate('Agenda')}
         icon={() => <MaterialIcons name="calendar-today" size={24} color="#5dc1b9" />}
         labelStyle={styles.drawerLabel}
       />
 
       <DrawerItem
-        label="Clients"
-        onPress={() => props.navigation.navigate('Clients')}
+        label="Clientes"
+        onPress={() => props.navigation.navigate('Clientes')}
         icon={() => <MaterialIcons name="people" size={24} color="#5dc1b9" />}
         labelStyle={styles.drawerLabel}
       />
-      
+
+      <DrawerItem
+        label="Procedimentos"
+        onPress={() => props.navigation.navigate('Procedimentos')}
+        icon={() => <MaterialIcons name="face" size={24} color="#5dc1b9" />}
+        labelStyle={styles.drawerLabel}
+      />
+
       <View style={styles.divider} />
 
       <DrawerItem
@@ -60,8 +68,9 @@ const DrawerNavigator = () => {
         },
       }}
     >
-      <Drawer.Screen name="Calendar" component={CalendarScreen} />
-      <Drawer.Screen name="Clients" component={ClientsScreen} />
+      <Drawer.Screen name="Agenda" component={CalendarScreen} />
+      <Drawer.Screen name="Clientes" component={ClientsScreen} />
+      <Drawer.Screen name="Procedimentos" component={ProcedureScreen} />
       <Drawer.Screen
         name="Logout"
         component={LogoutComponent}
