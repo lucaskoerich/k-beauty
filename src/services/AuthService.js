@@ -1,25 +1,16 @@
-import API_URL from '../../appsettings-dev';
+let users = [
+  { id: 1, name: 'Admin', email: 'admin', password: 'admin' },
+];
 
 export const login = async (email, password) => {
   try {
-    const response = await fetch(`${API_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const user = users.find(u => u.email === email && u.password === password);
 
-    if (!response.ok) {
-      if (response.status === 401) { //resposta da api caso login esteja incorreto
-        return { success: false, message: 'E-mail ou senha incorretos.' };
-      }
-      const errorData = await response.json();
-      return { success: false, message: errorData.message };
+    if (!user) {
+      return { success: false, message: 'E-mail ou senha incorretos.' };
     }
 
-    const data = await response.json();
-    return { success: true, data };
+    return { success: true, data: user };
   } catch (error) {
     return { success: false, message: error.message };
   }
@@ -27,18 +18,16 @@ export const login = async (email, password) => {
 
 export const signup = async (name, email, password) => {
   try {
-    const response = await fetch(`${API_URL}/auth`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      return { success: false, message: errorData.message };
+    const existingUser = users.find(u => u.email === email);
+    if (existingUser) {
+      return { success: false, message: 'E-mail já cadastrado.' };
     }
+
+    const newUserId = users.length > 0 ? users[users.length - 1].id + 1 : 1;
+
+    const newUser = { id: newUserId, name, email, password };
+    users.push(newUser);
 
     return { success: true, message: 'Conta criada com sucesso!' };
   } catch (error) {

@@ -1,19 +1,24 @@
-import API_URL from '../../appsettings-dev';
+let clients = [
+  { id: 1, name: 'João Silva', phone: '123456789', gender: 'Masculino' },
+  { id: 2, name: 'Maria Oliveira', phone: '987654321', gender: 'Feminino' },
+  { id: 3, name: 'Carlos Souza', phone: '456789123', gender: 'Masculino' },
+  { id: 4, name: 'Ana Costa', phone: '321654987', gender: 'Feminino' },
+];
+
+export const getClients = async () => {
+  try {
+    return { success: true, data: clients };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
 
 export const addClient = async (name, phone, gender) => {
   try {
-    const response = await fetch(`${API_URL}/clients`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, phone, gender }),
-    });
+    const newClientId = clients.length > 0 ? clients[clients.length - 1].id + 1 : 1;
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      return { success: false, message: errorData.message };
-    }
+    const newClient = { id: newClientId, name, phone, gender };
+    clients.push(newClient);
 
     return { success: true, message: 'Cliente adicionado com sucesso!' };
   } catch (error) {
@@ -21,41 +26,9 @@ export const addClient = async (name, phone, gender) => {
   }
 };
 
-export const getClients = async () => {
-  try {
-    const response = await fetch(`${API_URL}/clients`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      return { success: false, message: errorData.message };
-    }
-
-    const data = await response.json();
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, message: error.message };
-  }
-};
-
 export const deleteClient = async (clientId) => {
   try {
-    const response = await fetch(`${API_URL}/clients/${clientId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      return { success: false, message: errorData.message };
-    }
-
+    clients = clients.filter(client => client.id !== clientId);
     return { success: true, message: 'Cliente deletado com sucesso!' };
   } catch (error) {
     return { success: false, message: error.message };

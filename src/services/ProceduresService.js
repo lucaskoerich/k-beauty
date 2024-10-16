@@ -1,66 +1,41 @@
-import API_URL from '../../appsettings-dev';
+let procedures = [
+  { id: 1, name: 'Limpeza de Pele', value: 150.00, duration: 60 },
+  { id: 2, name: 'Hidratação', value: 80.00, duration: 30 },
+  { id: 3, name: 'Massagem Relaxante', value: 120.00, duration: 90 },
+  { id: 4, name: 'Pele de Bebê', value: 200.00, duration: 120 },
+];
 
 export const getProcedures = async () => {
   try {
-    const response = await fetch(`${API_URL}/procedures`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      return { success: false, message: errorData.message };
-    }
-
-    const data = await response.json();
-    return { success: true, data };
+    return { success: true, data: procedures };
   } catch (error) {
     return { success: false, message: error.message };
   }
 };
 
 export const addProcedure = async (name, price, duration) => {
-    try {
-      const formattedPrice = price.toString().replace(',', '.');
-  
-      const response = await fetch(`${API_URL}/procedures`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, value: formattedPrice, duration }),
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        return { success: false, message: errorData.message };
-      }
-  
-      return { success: true, message: 'Procedimento adicionado com sucesso!' };
-    } catch (error) {
-      return { success: false, message: error.message };
-    }
-  };
-  
-  export const deleteProcedure = async (id) => {
-    try {
-      const response = await fetch(`${API_URL}/procedures/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        return { success: false, message: errorData.message };
-      }
-  
-      return { success: true, message: 'Procedimento deletado com sucesso!' };
-    } catch (error) {
-      return { success: false, message: error.message };
-    }
-  };
-  
+  try {
+    const formattedPrice = price.toString().replace(',', '.');
+
+    const newProcedure = {
+      id: procedures.length + 1,
+      name,
+      value: parseFloat(formattedPrice),
+      duration,
+    };
+
+    procedures.push(newProcedure);
+    return { success: true, message: 'Procedimento adicionado com sucesso!' };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
+export const deleteProcedure = async (id) => {
+  try {
+    procedures = procedures.filter(procedure => procedure.id !== id);
+    return { success: true, message: 'Procedimento deletado com sucesso!' };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
